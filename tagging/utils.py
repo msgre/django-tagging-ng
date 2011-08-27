@@ -116,7 +116,7 @@ def edit_string_for_tags(tags):
     it will be space-delimited.
     """
     names = []
-    use_commas = False
+    use_commas = True
     for tag in tags:
         name = getattr(tag, 'name', tag)
         if u',' in name:
