@@ -565,8 +565,10 @@ class Tag(models.Model):
     if settings.MULTILINGUAL_TAGS:
         class Translation(multilingual.Translation):
             name = models.CharField(_('name'), max_length=50, unique=True, db_index=True)
+            description = models.TextField(_('description'), blank=True, null=True)
     else:
         name = models.CharField(_('name'), max_length=50, unique=True, db_index=True)
+        description = models.TextField(_('description'), blank=True, null=True)
 
     objects = TagManager()
 
