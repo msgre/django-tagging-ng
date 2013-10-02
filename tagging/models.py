@@ -566,9 +566,13 @@ class Tag(models.Model):
         class Translation(multilingual.Translation):
             name = models.CharField(_('name'), max_length=50, unique=True, db_index=True)
             description = models.TextField(_('description'), blank=True, null=True)
+            featured = models.BooleanField(_('featured'), default=False)
+            featured_date = models.DateTimeField(_('featured date'), null=True, blank=True)
     else:
         name = models.CharField(_('name'), max_length=50, unique=True, db_index=True)
         description = models.TextField(_('description'), blank=True, null=True)
+        featured = models.BooleanField(_('featured'), default=False)
+        featured_date = models.DateTimeField(_('featured date'), null=True, blank=True)
 
     objects = TagManager()
 
@@ -590,6 +594,15 @@ class Tag(models.Model):
         return super(Tag, self).delete()
 
     def save(self, *args, **kwargs):
+        if self.featured:
+            if self.id:
+                # aktualizace existujiciho stitku
+                if not Tag.objects.get(id=self.id).featured:
+                    # zmena featured atributu na True
+                    self.featured_date = datetime.now()
+            else:
+                # vytvoren novy stitek
+                self.featured_date = datetime.now()
         result = super(Tag, self).save(*args, **kwargs)
         self._updateLinkedObjects()
         return result
