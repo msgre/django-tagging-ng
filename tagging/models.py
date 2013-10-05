@@ -8,6 +8,7 @@ except NameError:
     from sets import Set as set
 
 import logging
+from datetime import datetime
 
 logger = logging.getLogger('tagging.models')
 
